@@ -1,6 +1,7 @@
 package worker;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import java.sql.*;
 import org.json.JSONObject;
@@ -46,7 +47,9 @@ class Worker {
   }
 
   static Jedis connectToRedis(String host) {
-    Jedis conn = new Jedis(host);
+    JedisShardInfo shardInfo = new JedisShardInfo("redis");
+    shardInfo.setPassword("redis-password");
+    Jedis conn = new Jedis(shardInfo);
 
     while (true) {
       try {
